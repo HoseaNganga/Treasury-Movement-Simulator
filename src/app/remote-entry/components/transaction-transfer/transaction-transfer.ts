@@ -135,17 +135,20 @@ export class TransactionTransfer implements OnInit, OnDestroy {
       ...this.transferForm.getRawValue(),
     };
 
+    console.log(formData);
+
     this.ledgerService.makeTransfer(formData).subscribe({
       next: () => {
         this.toastService.success('Transfer Completed!');
-        this.transferForm.reset();
+
         this.transferForm.patchValue({ fromId: this.fromAccount?.id });
 
         this.exchangeRate = null;
         this.convertedAmount = null;
         setTimeout(() => {
           this.router.navigate(['/transactions']);
-        }, 2000);
+        }, 1000);
+        this.transferForm.reset();
       },
       error: (err) => {
         console.log(err);
