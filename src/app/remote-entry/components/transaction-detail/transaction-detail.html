@@ -1,0 +1,28 @@
+<div class="p-4">
+  <mat-card *ngIf="transaction" class="shadow-md !p-4">
+    <h2 class="text-xl font-semibold mb-4">Transaction Details</h2>
+
+    <p><strong>Transaction ID:</strong> {{ transaction.id }}</p>
+    <p><strong>From:</strong> {{ transaction.from }}</p>
+    <p><strong>To:</strong> {{ transaction.to }}</p>
+    <p><strong>Currency:</strong> {{ transaction.currency }}</p>
+    <p>
+      <strong>Amount:</strong> {{ transaction.amount | number: '1.0-0' }} {{
+      transaction.currency }}
+    </p>
+    <p><strong>Note:</strong> {{ transaction.note || '—' }}</p>
+    <p>
+      <strong>Date Created:</strong> {{ transaction.timestamp | date: 'medium'
+      }}
+    </p>
+    <p>
+      <strong>Scheduled Date:</strong>
+      {{ transaction.scheduledDate ? (transaction.scheduledDate | date:
+      'medium') : '—' }}
+    </p>
+  </mat-card>
+
+  <mat-card *ngIf="!transaction">
+    <p class="text-gray-500 italic">Transaction not found.</p>
+  </mat-card>
+</div>

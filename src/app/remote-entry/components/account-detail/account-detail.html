@@ -1,0 +1,60 @@
+<div class="p-4 space-y-4">
+  <mat-card *ngIf="account" class="shadow-md !p-4">
+    <h2 class="text-xl font-semibold mb-2">Account Details</h2>
+    <p><strong>Account ID:</strong> {{ account.id }}</p>
+    <p><strong>Account Name:</strong> {{ account.name }}</p>
+    <p><strong>Currency:</strong> {{ account.currency }}</p>
+    <p>
+      <strong>Balance:</strong> {{ account.balance | number: '1.0-0' }} {{
+      account.currency }}
+    </p>
+
+    <div class="flex gap-4 mt-4">
+      <button mat-raised-button color="primary" (click)="transferFunds()">
+        <mat-icon>swap_horiz</mat-icon>
+        Transfer Funds
+      </button>
+      <button mat-raised-button color="accent" (click)="viewTransactions()">
+        <mat-icon>receipt_long</mat-icon>
+        View Transactions
+      </button>
+    </div>
+  </mat-card>
+
+  <mat-card *ngIf="recentTransactions.length > 0">
+    <h3 class="text-lg font-semibold mb-2">Recent Transactions</h3>
+    <table
+      mat-table
+      [dataSource]="recentTransactions"
+      class="w-full mat-elevation-z2"
+    >
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let txn">
+          {{ txn.timestamp | date: 'short' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="to">
+        <th mat-header-cell *matHeaderCellDef>To</th>
+        <td mat-cell *matCellDef="let txn">{{ txn.to }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Amount</th>
+        <td mat-cell *matCellDef="let txn">
+          {{ txn.amount | number: '1.0-0' }} {{ txn.currency }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['date', 'to', 'amount']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['date', 'to', 'amount']"></tr>
+    </table>
+  </mat-card>
+
+  <mat-card *ngIf="recentTransactions.length === 0 && account">
+    <p class="text-gray-500 italic p-4">
+      No transactions found for this account.
+    </p>
+  </mat-card>
+</div>

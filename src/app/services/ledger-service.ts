@@ -15,6 +15,12 @@ export class LedgerService {
       .pipe(catchError(this.handleError));
   }
 
+  getAccountById(id: string): Observable<Account> {
+    return this._httpClientService
+      .get<Account>(`/api/accounts/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
   getTransactions(filters?: {
     account?: string;
     currency?: string;
@@ -23,6 +29,12 @@ export class LedgerService {
 
     return this._httpClientService
       .get<Transaction[]>(`/api/transactions`, { params })
+      .pipe(catchError(this.handleError));
+  }
+
+  getTranscactionById(id: string): Observable<Transaction> {
+    return this._httpClientService
+      .get<Transaction>(`/api/transactions/${id}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -39,7 +51,9 @@ export class LedgerService {
 
   private handleError(error: any): Observable<never> {
     console.error('An error occurred', error);
-    return throwError(() => new Error('Something went wrong'));
+    return throwError(
+      () => new Error(error.error?.message || 'Something Went Wrong!')
+    );
   }
 
   private buildParams(params: Record<string, string>): HttpParams {
