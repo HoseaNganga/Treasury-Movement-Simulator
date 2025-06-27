@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { RemoteEntry } from './remote-entry';
+import { RouterModule } from '@angular/router';
+import { ToastComponent } from '../services/Toast/toast.component';
 
 describe('RemoteEntry', () => {
   let component: RemoteEntry;
@@ -8,13 +9,15 @@ describe('RemoteEntry', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RemoteEntry]
-    })
-    .compileComponents();
+      imports: [RouterModule.forRoot([]), ToastComponent, RemoteEntry],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RemoteEntry);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should create', () => {

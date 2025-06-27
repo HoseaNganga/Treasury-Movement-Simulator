@@ -3,9 +3,9 @@
     #drawer
     class="sidenav"
     fixedInViewport
-    role="dialog"
-    [opened]="false"
-    mode="over"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)"
   >
     <div class="text-center grid place-items-center h-[64px]">
       <span class="text-center text-2xl font-bold text-blue-600">TMS</span>
@@ -51,6 +51,30 @@
       </button>
 
       <span>{{ "treasury movement simulator" | titlecase }}</span>
+      <div class="absolute right-[10px]">
+        @if(user){
+        <div class="flex items-center gap-1">
+          <span class="text-base!">Hello {{ user.name }}</span>
+          <button
+            (click)="handleLogOut()"
+            mat-raised-button
+            color="primary"
+            class="!px-3.5 !py-1.5 !text-xs !min-w-0 !h-auto !leading-none"
+          >
+            LogOut
+          </button>
+        </div>
+        }@else {
+        <button
+          (click)="handleLogin()"
+          mat-raised-button
+          color="primary"
+          class="!px-3.5 !py-1.5 !text-xs !min-w-0 !h-auto !leading-none"
+        >
+          Login
+        </button>
+        }
+      </div>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
