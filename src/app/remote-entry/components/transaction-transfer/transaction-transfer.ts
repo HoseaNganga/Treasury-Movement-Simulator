@@ -19,6 +19,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ToastService } from '../../../services/Toast/toast.service';
 import { ToastComponent } from '../../../services/Toast/toast.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-transaction-transfer',
@@ -43,6 +44,7 @@ export class TransactionTransfer implements OnInit, OnDestroy {
   private readonly ledgerService = inject(LedgerService);
   private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
+  private readonly _NgxSpinnerService = inject(NgxSpinnerService);
   transferForm!: FormGroup;
   allAccounts: Account[] = [];
   fromAccount!: Account | undefined;
@@ -52,6 +54,7 @@ export class TransactionTransfer implements OnInit, OnDestroy {
   fromAccountId!: string | null;
 
   ngOnInit(): void {
+    this._NgxSpinnerService.show();
     this.fromAccountId = this.activatedRoute.snapshot.paramMap.get('id');
     this.transferForm = this.fb.group({
       fromId: [{ value: '', disabled: true }, Validators.required],
@@ -62,6 +65,9 @@ export class TransactionTransfer implements OnInit, OnDestroy {
     });
     this.getAllAccounts();
     this.setupValueChangeWatcher();
+    setTimeout(() => {
+      this._NgxSpinnerService.hide();
+    }, 700);
   }
 
   private getAllAccounts() {

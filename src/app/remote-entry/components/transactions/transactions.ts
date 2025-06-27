@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-transactions',
@@ -29,6 +30,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class Transactions implements OnInit, OnDestroy {
   private readonly ledgerService = inject(LedgerService);
+  private readonly _NgxSpinnerService = inject(NgxSpinnerService);
   allTransactions: Transaction[] = [];
   scheduledTransactions: Transaction[] = [];
   displayedTransactions: Transaction[] = [];
@@ -41,8 +43,12 @@ export class Transactions implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
+    this._NgxSpinnerService.show();
     this.loadAllTransactions();
     this.loadScheduledTransactions();
+    setTimeout(() => {
+      this._NgxSpinnerService.hide();
+    }, 700);
   }
 
   loadAllTransactions() {
