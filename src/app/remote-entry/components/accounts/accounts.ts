@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { displayedAccountColumns } from './models/account.model';
 import { Account } from '../../../services/models/ledger.models';
 import { LedgerService } from '../../../services/ledger-service';
@@ -18,12 +18,12 @@ import { RouterModule } from '@angular/router';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './accounts.html',
   styleUrl: './accounts.scss',
 })
-export class Accounts implements OnInit {
+export class Accounts implements OnInit, OnDestroy {
   private readonly ledgerService = inject(LedgerService);
   displayedColumns: string[] = displayedAccountColumns;
   dataSource: Account[] = [];
@@ -47,4 +47,8 @@ export class Accounts implements OnInit {
       });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
