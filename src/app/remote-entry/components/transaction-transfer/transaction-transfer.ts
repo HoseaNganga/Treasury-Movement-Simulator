@@ -130,6 +130,7 @@ export class TransactionTransfer implements OnInit, OnDestroy {
         alert('Transfer Successful');
         this.transferForm.reset();
         this.transferForm.patchValue({ fromId: this.fromAccount?.id });
+        this.router.navigate(['/transactions']);
         this.exchangeRate = null;
         this.convertedAmount = null;
       },
