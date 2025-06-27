@@ -52,10 +52,12 @@ export class TransactionTransfer implements OnInit, OnDestroy {
   convertedAmount: number | null = null;
   destroy$ = new Subject<void>();
   fromAccountId!: string | null;
+  remainingBalance: number = 0;
 
   ngOnInit(): void {
     this._NgxSpinnerService.show();
     this.fromAccountId = this.activatedRoute.snapshot.paramMap.get('id');
+
     this.transferForm = this.fb.group({
       fromId: [{ value: '', disabled: true }, Validators.required],
       toId: ['', Validators.required],
@@ -79,7 +81,9 @@ export class TransactionTransfer implements OnInit, OnDestroy {
           this.allAccounts = res;
 
           this.fromAccount = res.find((acc) => acc.id === this.fromAccountId);
+
           if (this.fromAccount) {
+            this.remainingBalance = this.fromAccount.balance;
             this.transferForm.patchValue({ fromId: this.fromAccount.id });
           }
         },
@@ -88,6 +92,7 @@ export class TransactionTransfer implements OnInit, OnDestroy {
         },
       });
   }
+
   private setupValueChangeWatcher(): void {
     this.transferForm.valueChanges
       .pipe(takeUntil(this.destroy$))
@@ -126,16 +131,60 @@ export class TransactionTransfer implements OnInit, OnDestroy {
           this.exchangeRate = null;
           this.convertedAmount = null;
         }
+
+        if (this.fromAccount) {
+          const numericAmount = Number(amount) || 0;
+          this.remainingBalance = this.fromAccount.balance - numericAmount;
+        }
       });
   }
+
+  /*  private setupValueChangeWatcher(): void {
+    this.transferForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((val) => {
+        const toAccount = this.allAccounts.find((a) => a.id === val.toId);
+        const amount = val.amount;
+
+        if (
+          this.fromAccount &&
+          toAccount &&
+          this.fromAccount.currency !== toAccount.currency &&
+          amount
+        ) {
+          const fxKey = `${this.fromAccount.currency}_${toAccount.currency}`;
+          const FX_RATES: Record<string, number> = {
+            USD_KES: 140,
+            KES_USD: 1 / 140,
+            USD_NGN: 770,
+            NGN_USD: 1 / 770,
+            KES_NGN: 770 / 140,
+            NGN_KES: 140 / 770,
+            USD_ZAR: 18,
+            ZAR_USD: 1 / 18,
+            KES_ZAR: 18 / 140,
+            ZAR_KES: 140 / 18,
+            NGN_ZAR: 18 / 770,
+            ZAR_NGN: 770 / 18,
+          };
+
+          this.exchangeRate = FX_RATES[fxKey] ?? null;
+          this.convertedAmount =
+            this.exchangeRate && amount
+              ? this.exchangeRate * Number(amount)
+              : null;
+        } else {
+          this.exchangeRate = null;
+          this.convertedAmount = null;
+        }
+      });
+  } */
   submitTransfer(): void {
     if (this.transferForm.invalid || !this.fromAccount) return;
 
     const formData = {
       ...this.transferForm.getRawValue(),
     };
-
-    console.log(formData);
 
     this.ledgerService.makeTransfer(formData).subscribe({
       next: () => {
