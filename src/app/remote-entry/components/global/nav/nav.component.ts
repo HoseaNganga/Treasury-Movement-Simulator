@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -22,6 +22,7 @@ import { RouterModule } from '@angular/router';
     MatIconModule,
     CommonModule,
     RouterModule,
+    AsyncPipe,
   ],
 })
 export class NavComponent {
@@ -33,4 +34,10 @@ export class NavComponent {
       map((result) => result.matches),
       shareReplay()
     );
+
+  closeIfMobile(isHandset: boolean, drawer: any): void {
+    if (isHandset) {
+      drawer.close();
+    }
+  }
 }
