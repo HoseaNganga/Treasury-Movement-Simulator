@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-transaction-detail',
@@ -17,12 +18,13 @@ import { MatIconModule } from '@angular/material/icon';
 export class TransactionDetail implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly ledgerService = inject(LedgerService);
-
+  private readonly _NgxSpinnerService = inject(NgxSpinnerService);
   transaction: Transaction | null = null;
 
   destroy$ = new Subject<void>();
 
   ngOnInit(): void {
+    this._NgxSpinnerService.show();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.ledgerService
@@ -33,6 +35,9 @@ export class TransactionDetail implements OnInit, OnDestroy {
           error: () => alert('Transaction not found'),
         });
     }
+    setTimeout(() => {
+      this._NgxSpinnerService.hide();
+    }, 700);
   }
 
   ngOnDestroy(): void {

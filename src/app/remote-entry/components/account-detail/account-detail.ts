@@ -8,10 +8,17 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-account-detail',
-    imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTableModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+  ],
 
   templateUrl: './account-detail.html',
   styleUrl: './account-detail.scss',
@@ -20,11 +27,13 @@ export class AccountDetail implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private ledgerService = inject(LedgerService);
   private router = inject(Router);
+  private readonly _NgxSpinnerService = inject(NgxSpinnerService);
   destroy$ = new Subject<void>();
   account: Account | null = null;
   recentTransactions: Transaction[] = [];
 
   ngOnInit(): void {
+    this._NgxSpinnerService.show();
     const accountId = this.route.snapshot.paramMap.get('id');
     if (!accountId) return;
 
@@ -38,6 +47,9 @@ export class AccountDetail implements OnInit, OnDestroy {
         },
         error: () => alert('Account not found'),
       });
+    setTimeout(() => {
+      this._NgxSpinnerService.hide();
+    }, 700);
   }
 
   fetchRecentTransactions(accountId: string) {
