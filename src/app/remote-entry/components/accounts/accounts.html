@@ -42,7 +42,8 @@
             <button
               mat-icon-button
               color="accent"
-              matTooltip="View Transactions"
+              matTooltip="View Account"
+              [routerLink]="['/accounts', account.id]"
             >
               <mat-icon>visibility</mat-icon>
             </button>

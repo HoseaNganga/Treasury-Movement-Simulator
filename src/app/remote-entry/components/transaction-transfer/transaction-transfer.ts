@@ -17,6 +17,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ToastService } from '../../../services/Toast/toast.service';
+import { ToastComponent } from '../../../services/Toast/toast.component';
 
 @Component({
   selector: 'app-transaction-transfer',
@@ -30,6 +32,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    ToastComponent,
   ],
   templateUrl: './transaction-transfer.html',
   styleUrl: './transaction-transfer.scss',
@@ -39,6 +42,7 @@ export class TransactionTransfer implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly ledgerService = inject(LedgerService);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
   transferForm!: FormGroup;
   allAccounts: Account[] = [];
   fromAccount!: Account | undefined;
@@ -127,14 +131,20 @@ export class TransactionTransfer implements OnInit, OnDestroy {
 
     this.ledgerService.makeTransfer(formData).subscribe({
       next: () => {
-        alert('Transfer Successful');
+        this.toastService.success('Transfer Completed!');
         this.transferForm.reset();
         this.transferForm.patchValue({ fromId: this.fromAccount?.id });
-        this.router.navigate(['/transactions']);
+
         this.exchangeRate = null;
         this.convertedAmount = null;
+        setTimeout(() => {
+          this.router.navigate(['/transactions']);
+        }, 2000);
       },
-      error: () => alert('Transfer failed.'),
+      error: (err) => {
+        console.log(err);
+        this.toastService.error(err.message || 'An error occured on Transfer');
+      },
     });
   }
 

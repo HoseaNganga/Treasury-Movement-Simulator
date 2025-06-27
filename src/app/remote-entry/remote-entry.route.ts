@@ -22,12 +22,27 @@ export const remoteRoutes: Routes = [
           import('./components/accounts/accounts').then((m) => m.Accounts),
       },
       {
+        path: 'accounts/:id',
+        loadComponent: () =>
+          import('./components/account-detail/account-detail').then(
+            (m) => m.AccountDetail
+          ),
+      },
+      {
         path: 'transactions',
         loadComponent: () =>
           import('./components/transactions/transactions').then(
             (m) => m.Transactions
           ),
       },
+      {
+        path: 'transactions/:id',
+        loadComponent: () =>
+          import('./components/transaction-detail/transaction-detail').then(
+            (m) => m.TransactionDetail
+          ),
+      },
+
       {
         path: 'transaction/transfer/:id',
         loadComponent: () =>
