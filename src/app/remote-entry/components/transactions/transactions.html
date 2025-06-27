@@ -36,25 +36,6 @@
       }}
     </h2>
     <div *ngIf="displayedTransactions.length > 0; else noData">
-      <div class="flex gap-2">
-        <button
-          mat-raised-button
-          color="accent"
-          [disabled]="selectedView === 'all'"
-          (click)="updateDisplayed('all')"
-        >
-          All Transactions
-        </button>
-        <button
-          mat-raised-button
-          color="accent"
-          [disabled]="selectedView === 'scheduled'"
-          (click)="updateDisplayed('scheduled')"
-        >
-          Scheduled Transactions
-        </button>
-      </div>
-      <br />
       <div style="overflow-x: auto">
         <table
           mat-table
