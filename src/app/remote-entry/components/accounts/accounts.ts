@@ -3,7 +3,7 @@ import { displayedAccountColumns } from './models/account.model';
 import { Account } from '../../../services/models/ledger.models';
 import { LedgerService } from '../../../services/ledger-service';
 import { Subject, takeUntil } from 'rxjs';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import {  CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
