@@ -1,4 +1,5 @@
 import {
+  APP_INITIALIZER,
   ApplicationConfig,
   importProvidersFrom,
   provideBrowserGlobalErrorListeners,
@@ -12,7 +13,7 @@ import {
   provideAnimations,
 } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
-
+import { initializeApp } from '../core/environment.loader';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -21,5 +22,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     importProvidersFrom(BrowserAnimationsModule),
     provideHttpClient(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      multi: true,
+    },
   ],
 };
