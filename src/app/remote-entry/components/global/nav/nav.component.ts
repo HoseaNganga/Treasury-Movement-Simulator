@@ -8,7 +8,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../../../services/Auth/auth.service';
 
 @Component({
   selector: 'app-nav',
@@ -27,6 +28,9 @@ import { RouterModule } from '@angular/router';
 })
 export class NavComponent {
   private breakpointObserver = inject(BreakpointObserver);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  user: any | null = JSON.parse(sessionStorage.getItem('tmsuser') || 'null');
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -39,5 +43,13 @@ export class NavComponent {
     if (isHandset) {
       drawer.close();
     }
+  }
+  handleLogOut() {
+    this.authService.signOut();
+    sessionStorage.removeItem('tmsuser');
+  }
+
+  handleLogin() {
+    this.router.navigate(['login']);
   }
 }
