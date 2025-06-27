@@ -3,9 +3,9 @@
     #drawer
     class="sidenav"
     fixedInViewport
-    role="dialog"
-    [opened]="false"
-    mode="over"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)"
   >
     <div class="text-center grid place-items-center h-[64px]">
       <span class="text-center text-2xl font-bold text-blue-600">TMS</span>
@@ -35,6 +35,18 @@
           class="hover:bg-gray-200 hover:text-[#005cbb] rounded-md mt-2 mx-1 my-2 p-3 cursor-pointer"
         >
           Transactions
+        </span>
+      </a>
+      <a
+        [routerLinkActive]="'active'"
+        [routerLink]="'scheduledtransactions'"
+        class="text-center p-2 text-gray-[500]"
+        (click)="drawer.close()"
+      >
+        <span
+          class="text-wrap text-left hover:bg-gray-200 hover:text-[#005cbb] rounded-md mt-2 mx-1 my-2 p-3 cursor-pointer"
+        >
+          Scheduled
         </span>
       </a>
     </ul>

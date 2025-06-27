@@ -21,6 +21,13 @@ export const remoteRoutes: Routes = [
         loadComponent: () =>
           import('./components/accounts/accounts').then((m) => m.Accounts),
       },
+      {
+        path: 'transaction/transfer/:id',
+        loadComponent: () =>
+          import('./components/transaction-transfer/transaction-transfer').then(
+            (m) => m.TransactionTransfer
+          ),
+      },
     ],
   },
 ];
