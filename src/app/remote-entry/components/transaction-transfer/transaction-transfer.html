@@ -8,6 +8,23 @@
           <input matInput [value]="fromAccount?.name" disabled />
         </mat-form-field>
 
+        <div *ngIf="fromAccount" class="mb-4">
+          <mat-card class="!p-6">
+            <p class="text-sm">
+              <strong>Balance:</strong>
+              <span
+                [ngClass]="{
+          'text-green-600': remainingBalance > 0,
+          'text-red-600': remainingBalance <= 0
+        }"
+              >
+                {{ remainingBalance | number: '1.2-2' }} {{ fromAccount.currency
+                }}
+              </span>
+            </p>
+          </mat-card>
+        </div>
+
         <mat-form-field appearance="fill">
           <mat-label>To Account</mat-label>
           <mat-select formControlName="toId">
