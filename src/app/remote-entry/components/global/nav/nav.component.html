@@ -1,0 +1,57 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    role="dialog"
+    [opened]="false"
+    mode="over"
+  >
+    <div class="text-center grid place-items-center h-[64px]">
+      <span class="text-center text-2xl font-bold text-blue-600">TMS</span>
+    </div>
+    <hr class="text-blue-400 mb-2" />
+
+    <ul class="flex flex-col gap-4">
+      <a
+        [routerLinkActive]="'active'"
+        [routerLink]="'accounts'"
+        class="text-center p-2 text-gray-[500]"
+        (click)="drawer.close()"
+      >
+        <span
+          class="hover:bg-gray-200 hover:text-[#005cbb] rounded-md mt-2 mx-1 my-2 p-3 cursor-pointer"
+        >
+          Accounts
+        </span>
+      </a>
+      <a
+        [routerLinkActive]="'active'"
+        [routerLink]="'transactions'"
+        class="text-center p-2 text-gray-[500]"
+        (click)="drawer.close()"
+      >
+        <span
+          class="hover:bg-gray-200 hover:text-[#005cbb] rounded-md mt-2 mx-1 my-2 p-3 cursor-pointer"
+        >
+          Transactions
+        </span>
+      </a>
+    </ul>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        matIconButton
+        (click)="drawer.toggle()"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+
+      <span>{{ "treasury movement simulator" | titlecase }}</span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

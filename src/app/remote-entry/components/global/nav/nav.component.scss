@@ -1,0 +1,30 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 160px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #005cbb;
+  color: #ffff;
+}
+
+.mat-mdc-nav-list .mat-mdc-list-item {
+  text-align: center;
+}
+
+.mat-mdc-icon-button .mat-icon {
+  color: #ffff;
+}
+
+.active {
+  color: #005cbb;
+  font-weight: bold;
+}
